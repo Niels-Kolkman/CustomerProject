@@ -20,6 +20,13 @@
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
+                <?php
+                if ($user->role == 'docent'){
+                    $val = 0;
+                }else{
+                    $val = 1;
+                }
+                ?>
                 <legend><?= __('Edit User') ?></legend>
                 <?php
                     echo $this->Form->control('firstname');
@@ -27,7 +34,7 @@
                     echo $this->Form->control('password');
                     echo $this->Form->control('class');
                     echo $this->Form->control('mail');
-                echo $this->Form->control('role', ['options' => ['docent', 'student']]);
+                    echo $this->Form->control('role', ['options' => ['docent', 'student'], 'empty' => false, 'value' => $val]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
