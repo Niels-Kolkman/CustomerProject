@@ -38,11 +38,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build('/') ?>"><span>Customer</span>Project</a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/4/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/4/">API</a>
+            <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']); ?>
+            <?= $this->Html->link('Tests', ['controller' => 'Tests', 'action' => 'index']); ?>
+            <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
         </div>
     </nav>
     <main class="main">
