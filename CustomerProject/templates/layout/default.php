@@ -14,10 +14,10 @@
  * @var \App\View\AppView $this
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'Customer Project';
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="EN">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,12 +38,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Customer</span>Project</a>
+            <a href="<?= $this->Url->build('/tests') ?>"><span>Customer</span>Project</a>
         </div>
         <div class="top-nav-links">
-            <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']); ?>
-            <?= $this->Html->link('Tests', ['controller' => 'Tests', 'action' => 'index']); ?>
-            <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
+            <?php if($_SESSION['Auth']['role'] === "docent"): ?>
+                <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']); ?>
+                <?= $this->Html->link('Groups', ['controller' => 'Groups', 'action' => 'index']); ?>
+                <?= $this->Html->link('Tests', ['controller' => 'Tests', 'action' => 'index']); ?>
+                <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
+            <?php elseif ($_SESSION['Auth']['role'] === "student"): ?>
+                <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
+            <?php endif; ?>
         </div>
     </nav>
     <main class="main">
