@@ -28,6 +28,7 @@ class Test extends Entity
      */
     protected $_accessible = [
         'name' => true,
+        'subject' => true,
         'date' => true,
         'start_time' => true,
         'end_time' => true,
