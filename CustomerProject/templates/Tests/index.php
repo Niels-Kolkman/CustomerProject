@@ -11,8 +11,8 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('subject') ?></th>
                     <th><?= $this->Paginator->sort('date') ?></th>
                     <th><?= $this->Paginator->sort('start_time') ?></th>
                     <th><?= $this->Paginator->sort('end_time') ?></th>
@@ -23,11 +23,11 @@
             <tbody>
                 <?php foreach ($tests as $test): ?>
                 <tr>
-                    <td><?= $this->Number->format($test->id) ?></td>
                     <td><?= h($test->name) ?></td>
+                    <td><?= h($test->subject) ?></td>
                     <td><?= h($test->date) ?></td>
-                    <td><?= h($test->start_time) ?></td>
-                    <td><?= h($test->end_time) ?></td>
+                    <td><?= h(date("h:i A", strtotime($test->start_time))) ?></td>
+                    <td><?= h(date("h:i A", strtotime($test->end_time))) ?></td>
                     <td><?= h($test->created) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>

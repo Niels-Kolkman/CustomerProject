@@ -11,7 +11,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('group_name') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -20,7 +19,6 @@
             <tbody>
                 <?php foreach ($groups as $group): ?>
                 <tr>
-                    <td><?= $this->Number->format($group->id) ?></td>
                     <td><?= h($group->group_name) ?></td>
                     <td><?= h($group->created) ?></td>
                     <td class="actions">
