@@ -30,8 +30,12 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+           $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
         $users = $this->paginate($this->Users);
-
         $this->set(compact('users'));
     }
 
@@ -44,6 +48,12 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
@@ -58,6 +68,12 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -80,6 +96,12 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
@@ -104,6 +126,12 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
