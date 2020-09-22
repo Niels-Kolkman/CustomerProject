@@ -46,6 +46,12 @@ class TestsController extends AppController
      */
     public function add()
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $test = $this->Tests->newEmptyEntity();
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
@@ -68,6 +74,12 @@ class TestsController extends AppController
      */
     public function edit($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $test = $this->Tests->get($id, [
             'contain' => [],
         ]);
@@ -92,6 +104,12 @@ class TestsController extends AppController
      */
     public function delete($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $this->request->allowMethod(['post', 'delete']);
         $test = $this->Tests->get($id);
         if ($this->Tests->delete($test)) {
