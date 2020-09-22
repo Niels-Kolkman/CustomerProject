@@ -25,8 +25,9 @@
                     echo $this->Form->control('firstname');
                     echo $this->Form->control('lastname');
                     echo $this->Form->control('password');
+                    echo $this->Form->control('class');
                     echo $this->Form->control('mail');
-                    echo $this->Form->control('role');
+                echo $this->Form->control('role', ['options' => ['docent', 'student']]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
