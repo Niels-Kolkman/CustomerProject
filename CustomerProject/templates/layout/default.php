@@ -15,6 +15,7 @@
  */
 
 $cakeDescription = 'Customer Project';
+$session = $this->getRequest()->getSession();
 ?>
 <!DOCTYPE html>
 <html lang="EN">
@@ -41,12 +42,12 @@ $cakeDescription = 'Customer Project';
             <a href="<?= $this->Url->build('/tests') ?>"><span>Customer</span>Project</a>
         </div>
         <div class="top-nav-links">
-            <?php if($_SESSION['Auth']['role'] === "docent"): ?>
+            <?php if($session->read('Auth.role') === "docent"): ?>
                 <?= $this->Html->link('Users', ['controller' => 'Users', 'action' => 'index']); ?>
                 <?= $this->Html->link('Groups', ['controller' => 'Groups', 'action' => 'index']); ?>
                 <?= $this->Html->link('Tests', ['controller' => 'Tests', 'action' => 'index']); ?>
                 <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
-            <?php elseif ($_SESSION['Auth']['role'] === "student"): ?>
+            <?php elseif ($session->read('Auth.role') === "student"): ?>
                 <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
             <?php endif; ?>
         </div>
