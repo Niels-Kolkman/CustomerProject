@@ -18,6 +18,12 @@ class GroupsController extends AppController
      */
     public function index()
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $groups = $this->paginate($this->Groups);
 
         $this->set(compact('groups'));
@@ -32,6 +38,12 @@ class GroupsController extends AppController
      */
     public function view($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $group = $this->Groups->get($id, [
             'contain' => [],
         ]);
@@ -46,6 +58,12 @@ class GroupsController extends AppController
      */
     public function add()
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $group = $this->Groups->newEmptyEntity();
         if ($this->request->is('post')) {
             $group = $this->Groups->patchEntity($group, $this->request->getData());
@@ -68,6 +86,12 @@ class GroupsController extends AppController
      */
     public function edit($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $group = $this->Groups->get($id, [
             'contain' => [],
         ]);
@@ -92,6 +116,12 @@ class GroupsController extends AppController
      */
     public function delete($id = null)
     {
+        $session = $this->getRequest()->getSession();
+        if ($session->read('Auth.role') == 'student'){
+            $this->Flash->error('You are not allowed here.');
+            $this->redirect($this->referer('/tests'));
+        }
+
         $this->request->allowMethod(['post', 'delete']);
         $group = $this->Groups->get($id);
         if ($this->Groups->delete($group)) {
