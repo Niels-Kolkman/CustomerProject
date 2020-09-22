@@ -121,7 +121,7 @@ class Application extends BaseApplication
         // Load identifiers, ensure we check email and password fields
         $authenticationService->loadIdentifier('Authentication.Password', [
             'fields' => [
-                'username' => 'email',
+                'username' => 'mail',
                 'password' => 'password',
             ]
         ]);
@@ -131,7 +131,7 @@ class Application extends BaseApplication
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'fields' => [
-                'username' => 'email',
+                'username' => 'mail',
                 'password' => 'password',
             ],
             'loginUrl' => '/users/login',
