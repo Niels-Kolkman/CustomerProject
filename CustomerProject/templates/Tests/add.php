@@ -18,6 +18,7 @@
                 <legend><?= __('Add Test') ?></legend>
                 <?php
                     echo $this->Form->control('name');
+                    echo $this->Form->control('subject');
                     echo $this->Form->control('date');
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
