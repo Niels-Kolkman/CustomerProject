@@ -123,7 +123,7 @@ class UsersController extends AppController
 
         if ($result->isValid()) {
             $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Users',
+                'controller' => 'Tests',
                 'action' => 'index',
             ]);
 
