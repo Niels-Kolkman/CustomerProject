@@ -22,7 +22,7 @@
                     echo $this->Form->control('password');
                     echo $this->Form->control('mail');
                     echo $this->Form->control('class');
-                    echo $this->Form->control('role', ['options' => ['docent', 'student']]);
+                    echo $this->Form->control('role', ['options' => ['docent' => 'docent', 'student' => 'student']]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

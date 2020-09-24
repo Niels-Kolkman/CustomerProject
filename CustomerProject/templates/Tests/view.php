@@ -16,27 +16,23 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="tests view content">
-            <h3><?= h($test->name) ?></h3>
+            <h3>Test: <?= h($test->name) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($test->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($test->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Date') ?></th>
+                    <th><?= __('Test Date') ?></th>
                     <td><?= h($test->date) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Start Time') ?></th>
-                    <td><?= h($test->start_time) ?></td>
+                    <td><?= h(date("h:i A", strtotime($test->start_time))) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('End Time') ?></th>
-                    <td><?= h($test->end_time) ?></td>
+                    <td><?= h(date("h:i A", strtotime($test->end_time))) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
