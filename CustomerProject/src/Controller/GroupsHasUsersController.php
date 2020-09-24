@@ -23,11 +23,18 @@ class GroupsHasUsersController extends AppController
      */
     public function view($id = null)
     {
-        $groupsHasUser = $this->GroupsHasUsers->get($id, [
-            'contain' => ['Groups', 'Users'],
-        ]);
-
-        $this->set(compact('groupsHasUser'));
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $groupsTable = TableRegistry::getTableLocator()->get('Groups');
+        $this->set('usersTable', $usersTable);
+        $this->set('group', $groupsTable->get($id));
+        $groupsHasUsers =
+            $this->GroupsHasUsers
+                ->find()
+                ->where([
+                    'groups_id' => $id
+                ])
+                ->toArray();
+        $this->set('groupsHasUsers', $groupsHasUsers);
     }
 
     /**
@@ -40,7 +47,7 @@ class GroupsHasUsersController extends AppController
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $groupsTable = TableRegistry::getTableLocator()->get('Groups');
         $groups = $this->GroupsHasUsers->Groups->newEmptyEntity();
-        $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $groups = $this->GroupsHasUsers->Groups->patchEntity($groups, $this->request->getData());
             if ($this->GroupsHasUsers->Groups->save($groups)) {
@@ -49,11 +56,13 @@ class GroupsHasUsersController extends AppController
                 $groupId = $groupsTable->find()->where(['group_name' => $groups['group_name']])->first();
                 $groupUsers = $this->request->getData('user_id');
              foreach($groupUsers as $id) {
+                 $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
                 $data = [
                     'groups_id' => $groupId['id'],
                     'users_id' => $id
                 ];
                  $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
+                 $this->GroupsHasUsers->save($a);
              }
                 return $this->redirect(['controller' => 'Groups', 'action' => 'index']);
             }

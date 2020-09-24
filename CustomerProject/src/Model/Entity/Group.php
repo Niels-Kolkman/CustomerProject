@@ -11,6 +11,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string|null $group_name
  * @property \Cake\I18n\FrozenTime|null $created
+ *
+ * @property \App\Model\Entity\GroupsHasUser[] $groups_has_users
  */
 class Group extends Entity
 {
@@ -26,5 +28,6 @@ class Group extends Entity
     protected $_accessible = [
         'group_name' => true,
         'created' => true,
+        'groups_has_users' => true,
     ];
 }

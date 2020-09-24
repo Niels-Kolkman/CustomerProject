@@ -22,7 +22,7 @@
                     <td><?= h($group->group_name) ?></td>
                     <td><?= h($group->created) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $group->id]) ?>
+                        <?= $this->Html->link(__('View'), ['controller' => 'GroupsHasUsers', 'action' => 'view', $group->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $group->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $group->id], ['confirm' => __('Are you sure you want to delete # {0}?', $group->id)]) ?>
                     </td>

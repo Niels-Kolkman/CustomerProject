@@ -44,8 +44,6 @@ class GroupsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
-        $this->hasMany('GroupsHasUsers');
     }
 
     /**
@@ -63,8 +61,23 @@ class GroupsTable extends Table
         $validator
             ->scalar('group_name')
             ->maxLength('group_name', 255)
-            ->allowEmptyString('group_name');
+            ->allowEmptyString('group_name')
+            ->add('group_name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->isUnique(['group_name']), ['errorField' => 'group_name']);
+
+        return $rules;
     }
 }

@@ -25,6 +25,7 @@ class GroupsTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Groups',
+        'app.GroupsHasUsers',
     ];
 
     /**

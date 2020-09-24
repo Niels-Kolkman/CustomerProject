@@ -22,6 +22,8 @@ class GroupsFixture extends TestFixture
         'created' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => true, 'default' => 'current_timestamp()', 'comment' => ''],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'group_name' => ['type' => 'unique', 'columns' => ['group_name'], 'length' => []],
+            'group_name_2' => ['type' => 'unique', 'columns' => ['group_name'], 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -40,7 +42,7 @@ class GroupsFixture extends TestFixture
             [
                 'id' => 1,
                 'group_name' => 'Lorem ipsum dolor sit amet',
-                'created' => '2020-09-17 09:58:30',
+                'created' => '2020-09-24 09:49:24',
             ],
         ];
         parent::init();
