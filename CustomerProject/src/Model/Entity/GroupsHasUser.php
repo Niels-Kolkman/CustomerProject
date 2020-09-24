@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
 /**
  * GroupsHasUser Entity
  *
+ * @property int $id
  * @property int $groups_id
  * @property int $users_id
  *

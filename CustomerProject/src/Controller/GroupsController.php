@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Groups Controller
  *
@@ -45,7 +47,7 @@ class GroupsController extends AppController
         }
 
         $group = $this->Groups->get($id, [
-            'contain' => [],
+            'contain' => ['GroupsHasUsers'],
         ]);
 
         $this->set(compact('group'));
@@ -63,6 +65,13 @@ class GroupsController extends AppController
             $this->Flash->error('You are not allowed here.');
             $this->redirect($this->referer('/tests'));
         }
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+
+        $users = $usersTable
+            ->find()
+            ->where([
+                'role' => 'student'
+            ])->toArray();
 
         $group = $this->Groups->newEmptyEntity();
         if ($this->request->is('post')) {
@@ -74,6 +83,7 @@ class GroupsController extends AppController
             }
             $this->Flash->error(__('The group could not be saved. Please, try again.'));
         }
+        $this->set('users', $users);
         $this->set(compact('group'));
     }
 

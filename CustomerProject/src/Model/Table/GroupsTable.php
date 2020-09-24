@@ -44,6 +44,8 @@ class GroupsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasMany('GroupsHasUsers');
     }
 
     /**

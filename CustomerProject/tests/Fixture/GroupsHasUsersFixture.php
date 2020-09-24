@@ -17,6 +17,7 @@ class GroupsHasUsersFixture extends TestFixture
      */
     // phpcs:disable
     public $fields = [
+        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'groups_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'users_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
@@ -24,8 +25,9 @@ class GroupsHasUsersFixture extends TestFixture
             'groups_id' => ['type' => 'index', 'columns' => ['groups_id'], 'length' => []],
         ],
         '_constraints' => [
-            'groups_id' => ['type' => 'foreign', 'columns' => ['groups_id'], 'references' => ['groups', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
-            'user_id' => ['type' => 'foreign', 'columns' => ['users_id'], 'references' => ['users', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'groups_id' => ['type' => 'foreign', 'columns' => ['groups_id'], 'references' => ['groups', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'user_id' => ['type' => 'foreign', 'columns' => ['users_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -42,6 +44,7 @@ class GroupsHasUsersFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'groups_id' => 1,
                 'users_id' => 1,
             ],

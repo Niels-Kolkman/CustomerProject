@@ -5,7 +5,7 @@
  */
 ?>
 <div class="groups index content">
-    <?= $this->Html->link(__('New Group'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Group'), ['controller' => 'GroupsHasUsers','action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Groups') ?></h3>
     <div class="table-responsive">
         <table>
