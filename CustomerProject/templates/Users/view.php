@@ -16,7 +16,7 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="users view content">
-            <h3><?= h($user->id) ?></h3>
+            <h3>User: <?= h($user->firstname) . ' ' . h($user->lastname) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Firstname') ?></th>
@@ -27,10 +27,6 @@
                     <td><?= h($user->lastname) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Password') ?></th>
-                    <td><?= h($user->password) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Mail') ?></th>
                     <td><?= h($user->mail) ?></td>
                 </tr>
@@ -38,10 +34,12 @@
                     <th><?= __('Role') ?></th>
                     <td><?= h($user->role) ?></td>
                 </tr>
+                <?php if ($user->role === 'student'): ?>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($user->id) ?></td>
+                  <th><?= __('Class') ?></th>
+                  <td><?= h($user->class) ?></td>
                 </tr>
+                <?php endif; ?>
                 <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($user->created) ?></td>

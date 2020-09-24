@@ -16,15 +16,11 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="groups view content">
-            <h3><?= h($group->id) ?></h3>
+            <h3>Group: <?= h($group->group_name) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Group Name') ?></th>
                     <td><?= h($group->group_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($group->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
