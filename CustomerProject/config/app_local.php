@@ -44,8 +44,8 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'u71481p69034_custpro',
-            'password' => 'g9T0avOp',
+            'username' => 'u71481p69034_projects',
+            'password' => 'FHsnAQrrH',
 
             'database' => 'u71481p69034_custpro',
             /**

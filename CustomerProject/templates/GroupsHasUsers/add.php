@@ -22,7 +22,7 @@
                 echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true]);
 
                 echo $this->Form->control('user_id', array(
-                    'label' => 'Users',
+                    'label' => 'Students',
                     'type' => 'select',
                     'multiple' => 'checkbox',
                     'options' => $users,

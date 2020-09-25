@@ -34,7 +34,7 @@
                     echo $this->Form->control('password');
                     echo $this->Form->control('class');
                     echo $this->Form->control('mail');
-                    echo $this->Form->control('role', ['options' => ['docent', 'student'], 'empty' => false, 'value' => $val]);
+                    echo $this->Form->control('role', ['options' => ['docent' => 'docent', 'student' => 'student'], 'empty' => false, 'value' => $val]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
