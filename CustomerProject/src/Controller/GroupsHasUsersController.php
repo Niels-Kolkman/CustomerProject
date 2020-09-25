@@ -25,7 +25,11 @@ class GroupsHasUsersController extends AppController
     {
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $groupsTable = TableRegistry::getTableLocator()->get('Groups');
-        $this->set('usersTable', $usersTable);
+        $users = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
+        foreach($users as $user){
+            $usersInGroup[] = $usersTable->get($user['id']);
+        }
+        $this->set('users', $usersInGroup);
         $this->set('group', $groupsTable->get($id));
         $groupsHasUsers =
             $this->GroupsHasUsers
@@ -55,15 +59,15 @@ class GroupsHasUsersController extends AppController
 
                 $groupId = $groupsTable->find()->where(['group_name' => $groups['group_name']])->first();
                 $groupUsers = $this->request->getData('user_id');
-             foreach($groupUsers as $id) {
-                 $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
-                $data = [
-                    'groups_id' => $groupId['id'],
-                    'users_id' => $id
-                ];
-                 $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
-                 $this->GroupsHasUsers->save($a);
-             }
+                foreach($groupUsers as $id) {
+                    $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
+                    $data = [
+                        'groups_id' => $groupId['id'],
+                        'users_id' => $id
+                    ];
+                    $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
+                    $this->GroupsHasUsers->save($a);
+                }
                 return $this->redirect(['controller' => 'Groups', 'action' => 'index']);
             }
             $this->Flash->error(__('The group could not be saved. Please, try again.'));
