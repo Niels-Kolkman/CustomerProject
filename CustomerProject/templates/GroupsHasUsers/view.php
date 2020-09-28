@@ -15,6 +15,7 @@
         <div class="groupsHasUsers view content">
             <h3>Group: <?= h($group->group_name) ?></h3>
             <table>
+                <?php if (!empty($users)): ?>
                 <?php foreach($users as $user): ?>
                 <tr>
                     <th><?= __('Student') ?></th>
@@ -23,6 +24,9 @@
                     </td>
                 </tr>
                 <?php endforeach ?>
+                <?php else: ?>
+                  <tr><td>No users found for this group.</td></tr>
+                <?php endif; ?>
             </table>
         </div>
     </div>
