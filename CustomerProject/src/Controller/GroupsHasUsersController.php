@@ -26,6 +26,7 @@ class GroupsHasUsersController extends AppController
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $groupsTable = TableRegistry::getTableLocator()->get('Groups');
         $users = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
+        $usersInGroup = array();
         foreach ($users as $user) {
             $usersInGroup[] = $usersTable->get($user['users_id']);
         }
