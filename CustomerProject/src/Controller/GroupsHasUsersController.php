@@ -95,9 +95,10 @@ class GroupsHasUsersController extends AppController
      */
     public function edit($id = null)
     {
-        $groupsHasUser = $this->GroupsHasUsers->get($id, [
-            'contain' => [],
-        ]);
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $groupsTable = TableRegistry::getTableLocator()->get('Groups');
+        $group = $groupsTable->find()->where(['id' => $id]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $groupsHasUser = $this->GroupsHasUsers->patchEntity($groupsHasUser, $this->request->getData());
             if ($this->GroupsHasUsers->save($groupsHasUser)) {
@@ -107,9 +108,13 @@ class GroupsHasUsersController extends AppController
             }
             $this->Flash->error(__('The groups has user could not be saved. Please, try again.'));
         }
-        $groups = $this->GroupsHasUsers->Groups->find('list', ['limit' => 200]);
-        $users = $this->GroupsHasUsers->Users->find('list', ['limit' => 200]);
-        $this->set(compact('groupsHasUser', 'groups', 'users'));
+
+        $users = $usersTable->find()->toArray();
+        $groupsHasUsers = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
+
+        $this->set('group', $group);
+        $this->set('users', $users);
+        $this->set('groupsHasUsers', $groupsHasUsers);
     }
 
 }
