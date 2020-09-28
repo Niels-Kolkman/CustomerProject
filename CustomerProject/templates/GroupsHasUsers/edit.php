@@ -21,14 +21,18 @@
                     <?php
                     echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true]);
 
+
                     foreach ($users as $user) {
                         echo $this->Form->control('user_id', array(
                             'label' => $user['firstname'] . ' ' . $user['lastname'],
+                            'value' => $user['id'],
+                            'multiple' => 'checkbox',
                             'type' => 'checkbox',
                             'options' => $user,
-                            'selected' => $groupsHasUsers,
+                            'selected' => $groupsHasUsers
                         ));
                     }
+
                     ?>
 
                 </fieldset>
