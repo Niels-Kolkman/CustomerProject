@@ -97,7 +97,7 @@ class GroupsHasUsersController extends AppController
     {
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $groupsTable = TableRegistry::getTableLocator()->get('Groups');
-        $group = $groupsTable->find()->where(['id' => $id]);
+        $group = $groupsTable->find()->where(['id' => $id])->first();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $groupsHasUser = $this->GroupsHasUsers->patchEntity($groupsHasUser, $this->request->getData());
@@ -109,7 +109,15 @@ class GroupsHasUsersController extends AppController
             $this->Flash->error(__('The groups has user could not be saved. Please, try again.'));
         }
 
-        $users = $usersTable->find()->toArray();
+        $users = $usersTable
+            ->find('list', [ 'keyField' => 'id',
+                'valueField' => function ($e) {
+                    return $e->get('firstname'). ' ' . $e->get('lastname');
+                }])
+            ->where([
+                'role' => 'student'
+            ])->toArray();
+
         $groupsHasUsers = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
 
         $this->set('group', $group);
