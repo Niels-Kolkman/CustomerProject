@@ -5,7 +5,9 @@
  */
 ?>
 <div class="tests index content">
-    <?= $this->Html->link(__('New Test'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?php if ($this->getRequest()->getSession()->read('Auth.role') !== 'student'): ?>
+        <?= $this->Html->link(__('New Test'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?php endif; ?>
     <h3><?= __('Tests') ?></h3>
     <div class="table-responsive">
         <table>
@@ -31,8 +33,10 @@
                     <td><?= h($test->created) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $test->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $test->id], ['confirm' => __('Are you sure you want to delete # {0}?', $test->id)]) ?>
+                        <?php if ($this->getRequest()->getSession()->read('Auth.role') !== 'student'): ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $test->id]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $test->id], ['confirm' => __('Are you sure you want to delete # {0}?', $test->id)]) ?>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
