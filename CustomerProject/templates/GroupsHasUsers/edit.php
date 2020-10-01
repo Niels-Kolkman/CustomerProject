@@ -20,7 +20,7 @@
                     <legend><?= __('Edit Group') ?></legend>
                     <?php
                    // debug($group); die();
-                    echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true, 'default' => $group->name]);
+                    echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true, 'default' => $group->group_name]);
                     $selectedUsers = array();
                     foreach($groupsHasUsers as $groupsHasUser){
                         $selectedUsers[] = $groupsHasUser['users_id'];
