@@ -58,7 +58,8 @@ $session = $this->getRequest()->getSession();
             <?= $this->fetch('content') ?>
         </div>
     </main>
-    <footer>
+    <footer style="text-align: center; margin-top: 20px;">
+      <small>Build by: Niels Kolkman & Jeroen de Nijs (<a href="https://jeroendn.nl" target="_blank">jeroendn.nl</a>)</small>
     </footer>
 </body>
 </html>
