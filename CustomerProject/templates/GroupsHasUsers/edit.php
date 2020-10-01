@@ -21,17 +21,36 @@
                     <?php
                     echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true]);
 
+                    $selectedUsers = array_column($groupsHasUsers, 'users_id');
+                    debug($selectedUsers);
 
-                    foreach ($users as $user) {
-                        echo $this->Form->control('user_id', array(
-                            'label' => $user['firstname'] . ' ' . $user['lastname'],
-                            'value' => $user['id'],
-                            'multiple' => 'checkbox',
-                            'type' => 'checkbox',
-                            'options' => $user,
-                            'selected' => $groupsHasUsers
-                        ));
-                    }
+                    $users = array_column($users, 'id');
+                    debug($users);
+
+//                    foreach ($users as $user) {
+//                        echo $this->Form->control('user_id', array(
+//                            'label' => $user['firstname'] . ' ' . $user['lastname'],
+//                            'value' => $user['id'],
+//                            'multiple' => 'checkbox',
+//                            'type' => 'checkbox',
+//                            'options' => $user,
+//                            'selected' => $groupsHasUsers
+//                        ));
+//                    }
+
+//                    echo $this->Form->control('user_id', array(
+////                        'label' => $usersNames,
+//                        'value' => $users,
+//                        'multiple' => 'checkbox',
+//                        'type' => 'select',
+//                        'options' => $users,
+//                        'selected' => $selectedUsers
+//                    ));
+
+                    echo $this->Form->select('user_id', $users, [
+                        'multiple' => 'checkbox',
+                        'selected' => $groupsHasUsers
+                    ]);
 
                     ?>
 
