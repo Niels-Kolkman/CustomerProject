@@ -27,6 +27,11 @@
                     echo $this->Form->control('date');
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
+
+//                    echo $this->Form->select('user_id', $users, [
+//                        'multiple' => 'checkbox',
+//                        'default' => $selectedUsers
+//                    ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

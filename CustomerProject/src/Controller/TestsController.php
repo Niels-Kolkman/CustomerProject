@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Tests Controller
  *
@@ -62,7 +64,16 @@ class TestsController extends AppController
             }
             $this->Flash->error(__('The test could not be saved. Please, try again.'));
         }
+
+        $groupsTable = TableRegistry::getTableLocator()->get('groups');
+        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
+
+        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
+        $testHasGroups = $testHasGroupsTable->find()->toArray();
+
         $this->set(compact('test'));
+        $this->set(compact('groups'));
+        $this->set(compact('testHasGroups'));
     }
 
     /**

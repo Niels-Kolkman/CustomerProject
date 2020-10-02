@@ -22,6 +22,18 @@
                     echo $this->Form->control('date');
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
+
+//                    debug($groups); die();
+
+                      $selectedGroups = array();
+                      foreach($testHasGroups as $testHasGroup){
+                          $selectedGroups[] = $testHasGroup['groups_id'];
+                      }
+
+                      echo $this->Form->select('group_id', $groups, [
+                          'multiple' => 'checkbox',
+                          'default' => $selectedGroups
+                      ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

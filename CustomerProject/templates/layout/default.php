@@ -59,7 +59,7 @@ $session = $this->getRequest()->getSession();
         </div>
     </main>
     <footer style="text-align: center; margin-top: 20px;">
-      <small>Build by: Niels Kolkman & Jeroen de Nijs (<a href="https://jeroendn.nl" target="_blank">jeroendn.nl</a>)</small>
+      <small>Build by: Niels Kolkman (<a href="https://www.linkedin.com/in/niels-kolkman-519552173/" target="_blank">LinkedIn</a>) & Jeroen de Nijs (<a href="https://jeroendn.nl" target="_blank">jeroendn.nl</a>)</small>
     </footer>
 </body>
 </html>
