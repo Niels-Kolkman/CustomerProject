@@ -17,23 +17,27 @@
             <fieldset>
                 <legend><?= __('Add Test') ?></legend>
                 <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('subject');
-                    echo $this->Form->control('date');
-                    echo $this->Form->control('start_time');
-                    echo $this->Form->control('end_time');
+                echo $this->Form->control('name');
+                echo $this->Form->control('subject');
+                echo $this->Form->control('date');
+                echo $this->Form->control('start_time');
+                echo $this->Form->control('end_time');
 
-//                    debug($groups); die();
+                $selectedGroups = array();
+                foreach ($testHasGroups as $testHasGroup) {
+                    $selectedGroups[] = $testHasGroup['groups_id'];
+                }
 
-                      $selectedGroups = array();
-                      foreach($testHasGroups as $testHasGroup){
-                          $selectedGroups[] = $testHasGroup['groups_id'];
-                      }
+                echo '<label for="group_id">Groups</label>';
+                echo '<div class="container">';
+                echo $this->Form->select('group_id', $groups, [
+                    'multiple' => 'checkbox',
+                    'default' => $selectedGroups
+                ]);
+                echo '</div>'
 
-                      echo $this->Form->select('group_id', $groups, [
-                          'multiple' => 'checkbox',
-                          'default' => $selectedGroups
-                      ]);
+
+
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
