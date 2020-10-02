@@ -53,4 +53,8 @@ class User extends Entity
             return (new DefaultPasswordHasher())->hash($password);
         }
     }
+
+    public function name() {
+        return "$this->user->firstname $this->user->lastname";
+    }
 }

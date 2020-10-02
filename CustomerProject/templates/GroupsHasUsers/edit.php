@@ -19,17 +19,16 @@
                 <fieldset>
                     <legend><?= __('Edit Group') ?></legend>
                     <?php
-                    echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true]);
-
-                    echo $this->Form->control('user_id', array(
-                        'label' => 'Students',
-                        'type' => 'select',
+                    echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true, 'default' => $group->group_name]);
+                    $selectedUsers = array();
+                    foreach($groupsHasUsers as $groupsHasUser){
+                        $selectedUsers[] = $groupsHasUser['users_id'];
+                    }
+                    echo $this->Form->select('user_id', $users, [
                         'multiple' => 'checkbox',
-                        'options' => $users,
-                        'selected' => '',
-                    ));
+                        'default' => $selectedUsers
+                    ]);
                     ?>
-
                 </fieldset>
                 <?= $this->Form->button(__('Submit')) ?>
                 <?= $this->Form->end() ?>

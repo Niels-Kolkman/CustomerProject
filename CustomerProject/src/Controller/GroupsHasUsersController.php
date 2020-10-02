@@ -25,7 +25,12 @@ class GroupsHasUsersController extends AppController
     {
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $groupsTable = TableRegistry::getTableLocator()->get('Groups');
-        $this->set('usersTable', $usersTable);
+        $users = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
+        $usersInGroup = array();
+        foreach ($users as $user) {
+            $usersInGroup[] = $usersTable->get($user['users_id']);
+        }
+        $this->set('users', $usersInGroup);
         $this->set('group', $groupsTable->get($id));
         $groupsHasUsers =
             $this->GroupsHasUsers
@@ -55,15 +60,15 @@ class GroupsHasUsersController extends AppController
 
                 $groupId = $groupsTable->find()->where(['group_name' => $groups['group_name']])->first();
                 $groupUsers = $this->request->getData('user_id');
-             foreach($groupUsers as $id) {
-                 $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
-                $data = [
-                    'groups_id' => $groupId['id'],
-                    'users_id' => $id
-                ];
-                 $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
-                 $this->GroupsHasUsers->save($a);
-             }
+                foreach($groupUsers as $id) {
+                    $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
+                    $data = [
+                        'groups_id' => $groupId['id'],
+                        'users_id' => $id
+                    ];
+                    $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
+                    $this->GroupsHasUsers->save($a);
+                }
                 return $this->redirect(['controller' => 'Groups', 'action' => 'index']);
             }
             $this->Flash->error(__('The group could not be saved. Please, try again.'));
@@ -90,21 +95,68 @@ class GroupsHasUsersController extends AppController
      */
     public function edit($id = null)
     {
-        $groupsHasUser = $this->GroupsHasUsers->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $groupsHasUser = $this->GroupsHasUsers->patchEntity($groupsHasUser, $this->request->getData());
-            if ($this->GroupsHasUsers->save($groupsHasUser)) {
-                $this->Flash->success(__('The groups has user has been saved.'));
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $groupsTable = TableRegistry::getTableLocator()->get('Groups');
+        $group = $groupsTable->find()->where(['id' => $id])->first();
 
-                return $this->redirect(['action' => 'index']);
+        $users = $usersTable
+            ->find('list', [ 'keyField' => 'id',
+                'valueField' => function ($e) {
+                    return $e->get('firstname'). ' ' . $e->get('lastname');
+                }])
+            ->where([
+                'role' => 'student'
+            ])->toArray();
+
+        $groupsHasUsers = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
+
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if ($this->request->getData('group_name') !== $group->group_name){
+                $groupNewName = $groupsTable->patchEntity($group, $this->request->getData('group_name'));
+                $groupsTable->save($groupNewName);
+                $this->Flash->success(__('The group name has been saved.'));
             }
-            $this->Flash->error(__('The groups has user could not be saved. Please, try again.'));
+            if(empty($this->request->getData('user_id')) == false) {
+                foreach ($this->request->getData('user_id') as $user) {
+                    if (array_search($user, array_column($groupsHasUsers, 'users_id')) == false) {
+                        $newUser = $this->GroupsHasUsers->newEmptyEntity();
+                        $GroupAndUserId = ['groups_id' => $id, 'users_id' => $user];
+
+                        $newUser = $this->GroupsHasUsers->patchEntity($newUser, $GroupAndUserId);
+                        if ($this->GroupsHasUsers->save($newUser)) {
+                            $this->Flash->success(__('User has been added to group'));
+                            continue;
+                        }
+                    }
+                }
+
+                foreach (array_column($groupsHasUsers, 'users_id') as $existingUser) {
+                    if (in_array($existingUser, $this->request->getData('user_id')) == false) {
+                        $removedUser = $this->GroupsHasUsers->find()
+                            ->where([
+                                'groups_id' => $id,
+                                'users_id' => $existingUser
+                            ])
+                            ->first();
+                        if ($this->GroupsHasUsers->delete($removedUser)) {
+                            $this->Flash->success(__('User has been removed from group'));
+                        }
+                    }
+                }
+            }else{
+                $removedUsers = $this->GroupsHasUsers->find()
+                    ->where([
+                        'groups_id' => $id
+                    ])
+                    ->toArray();
+               $this->GroupsHasUsers->deleteMany($removedUsers);
+                $this->Flash->success(__('Users have been removed from group'));
+            }
         }
-        $groups = $this->GroupsHasUsers->Groups->find('list', ['limit' => 200]);
-        $users = $this->GroupsHasUsers->Users->find('list', ['limit' => 200]);
-        $this->set(compact('groupsHasUser', 'groups', 'users'));
+        $this->set('group', $group);
+        $this->set('users', $users);
+        $this->set('groupsHasUsers', $groupsHasUsers);
     }
 
 }

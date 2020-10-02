@@ -13,20 +13,20 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="groupsHasUsers view content">
-            <h3><?= h($group->group_name) ?></h3>
+            <h3>Group: <?= h($group->group_name) ?></h3>
             <table>
-                <?php foreach($groupsHasUsers as $groupsHasUser): ?>
+                <?php if (!empty($users)): ?>
+                <?php foreach($users as $user): ?>
                 <tr>
-                    <th><?= __('User') ?></th>
+                    <th><?= __('Student') ?></th>
                     <td>
-                        <?= $groupsHasUser->has('user') ? $this->Html->link($groupsHasUser->user->id,
-                            ['controller' => 'Users', 'action' => 'view', $groupsHasUser->user->id]) : '' ?>
-                    </td>
-                    <td>
-                        <?= $this->Html->link($groupsHasUser->user->firstname. '' . $groupsHasUser->user->lastname, ['controller' => 'Users', 'action' => 'view', $groupsHasUser->user->id]); ?>
+                        <?= $this->Html->link($user['firstname'] . ' ' . $user['lastname'], ['controller' => 'Users', 'action' => 'view', $user->id]); ?>
                     </td>
                 </tr>
                 <?php endforeach ?>
+                <?php else: ?>
+                  <tr><td>No users found for this group.</td></tr>
+                <?php endif; ?>
             </table>
         </div>
     </div>
