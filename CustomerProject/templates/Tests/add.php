@@ -37,7 +37,7 @@
                 echo '</div>';
 
                 echo '<label for="users_id">Students</label>';
-                echo '<div class="container">';
+                echo '<div class="container checkbox-list-box">';
                 echo $this->Form->control('user_id', array(
                     'label' => false,
                     'type' => 'select',
