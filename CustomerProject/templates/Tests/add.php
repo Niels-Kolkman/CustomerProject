@@ -29,7 +29,7 @@
                 }
 
                 echo '<label for="group_id">Groups</label>';
-                echo '<div class="container">';
+                echo '<div class="container checkbox-list-box">';
                 echo $this->Form->select('group_id', $groups, [
                     'multiple' => 'checkbox',
                     'default' => $selectedGroups
