@@ -4,6 +4,7 @@
   padding-top: 15px;
   overflow: auto;
   max-height: 50vh;
+  margin-bottom: 30px;
 }
 
 .checkbox-list-box .checkbox label {

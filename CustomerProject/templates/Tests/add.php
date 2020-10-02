@@ -23,21 +23,15 @@
                 echo $this->Form->control('start_time');
                 echo $this->Form->control('end_time');
 
-                $selectedGroups = array();
-                foreach ($testHasGroups as $testHasGroup) {
-                    $selectedGroups[] = $testHasGroup['groups_id'];
-                }
-
-                echo '<label for="group_id">Groups</label>';
                 echo '<div class="container checkbox-list-box">';
+                echo '<label for="group_id">Groups</label>';
                 echo $this->Form->select('group_id', $groups, [
                     'multiple' => 'checkbox',
-                    'default' => $selectedGroups
                 ]);
                 echo '</div>';
 
-                echo '<label for="users_id">Students</label>';
                 echo '<div class="container checkbox-list-box">';
+                echo '<label for="users_id">Students</label>';
                 echo $this->Form->control('user_id', array(
                     'label' => false,
                     'type' => 'select',

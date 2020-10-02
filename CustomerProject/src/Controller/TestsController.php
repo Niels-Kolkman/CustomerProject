@@ -67,23 +67,58 @@ class TestsController extends AppController
         $groupsTable = TableRegistry::getTableLocator()->get('groups');
         $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
 
-        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
-        $testHasGroups = $testHasGroupsTable->find()->toArray();
-
         $test = $this->Tests->newEmptyEntity();
+        $allTests = $this->Tests->find()->toArray();
+
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
-            if ($this->Tests->save($test)) {
-                $this->Flash->success(__('The test has been saved.'));
+            if (array_search($this->request->getData('name'), $allTests) !==  false) {
+                if ($this->Tests->save($test)) {
+                    $this->Flash->success(__('The test has been saved.'));
+                } else {
+                    $this->Flash->error(__('The test could not be saved. Please, try again.'));
+                    return $this->redirect(['action' => 'index']);
+                }
 
+
+                $newTestId = $this->Tests->find()
+                    ->where([
+                        'name' => $this->request->getData('name'),
+                    ])
+                    ->select('id')
+                    ->first();
+
+
+                if (!empty($this->request->getData('group_id'))) {
+                    $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
+                    $groups = $this->request->getData('group_id');
+                    foreach ($groups as $group) {
+                        $testHasGroups = $testHasGroupsTable->newEmptyEntity();
+                        $data = ['groups_id' => $group->id, 'tests_id' => $newTestId['id']];
+                        $newTestHasGroups = $testHasGroupsTable->patchEntity($testHasGroups, $data);
+                        $testHasGroupsTable->save($newTestHasGroups);
+                    }
+                }
+                if (!empty($this->request->getData('user_id'))) {
+                    $testHasUserTable = TableRegistry::getTableLocator()->get('testHasUser');
+                    $students = $this->request->getData('user_id');
+                    foreach ($students as $student) {
+                        $testHasUser = $testHasUserTable->newEmptyEntity();
+                        $data = ['users_id' => $student->id, 'tests_id' => $newTestId['id']];
+                        $newTestHasUsers = $testHasUserTable->patchEntity($testHasUser, $data);
+                        $testHasUserTable->save($newTestHasUsers);
+                    }
+                }
+                return $this->redirect(['action' => 'index']);
+            }else{
+                $this->Flash->error(__('The test could not be saved. The name is already used. Please, try again.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The test could not be saved. Please, try again.'));
         }
+
         $this->set(compact('users'));
         $this->set(compact('test'));
         $this->set(compact('groups'));
-        $this->set(compact('testHasGroups'));
     }
 
     /**
