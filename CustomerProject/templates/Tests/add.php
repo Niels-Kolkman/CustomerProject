@@ -34,9 +34,17 @@
                     'multiple' => 'checkbox',
                     'default' => $selectedGroups
                 ]);
-                echo '</div>'
+                echo '</div>';
 
-
+                echo '<label for="users_id">Students</label>';
+                echo '<div class="container">';
+                echo $this->Form->control('user_id', array(
+                    'label' => false,
+                    'type' => 'select',
+                    'multiple' => 'checkbox',
+                    'options' => $users,
+                ));
+                echo '</div>';
 
                 ?>
             </fieldset>

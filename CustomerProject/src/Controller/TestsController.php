@@ -54,6 +54,22 @@ class TestsController extends AppController
             $this->redirect($this->referer('/tests'));
         }
 
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $users = $usersTable
+            ->find('list', [ 'keyField' => 'id',
+                'valueField' => function ($e) {
+                    return $e->get('firstname'). ' ' . $e->get('lastname');
+                }])
+            ->where([
+                'role' => 'student'
+            ])->toArray();
+
+        $groupsTable = TableRegistry::getTableLocator()->get('groups');
+        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
+
+        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
+        $testHasGroups = $testHasGroupsTable->find()->toArray();
+
         $test = $this->Tests->newEmptyEntity();
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
@@ -64,13 +80,7 @@ class TestsController extends AppController
             }
             $this->Flash->error(__('The test could not be saved. Please, try again.'));
         }
-
-        $groupsTable = TableRegistry::getTableLocator()->get('groups');
-        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
-
-        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
-        $testHasGroups = $testHasGroupsTable->find()->toArray();
-
+        $this->set(compact('users'));
         $this->set(compact('test'));
         $this->set(compact('groups'));
         $this->set(compact('testHasGroups'));
