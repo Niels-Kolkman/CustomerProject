@@ -37,8 +37,26 @@ class TestsController extends AppController
         $test = $this->Tests->get($id, [
             'contain' => [],
         ]);
+        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
+        $testHasUserTable = TableRegistry::getTableLocator()->get('testHasUser');
+
+        $selectedGroups = $testHasGroupsTable->find()
+            ->where([
+                'tests_id' => $id
+            ])
+            ->contain('Groups')
+            ->toArray();
+
+        $selectedUsers = $testHasUserTable->find()
+            ->where([
+                'tests_id' => $id
+            ])
+            ->contain('Users')
+            ->toArray();
 
         $this->set(compact('test'));
+        $this->set(compact('selectedGroups'));
+        $this->set(compact('selectedUsers'));
     }
 
     /**
