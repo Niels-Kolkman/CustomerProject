@@ -91,6 +91,14 @@ class TestsController extends AppController
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
 
+            $startTime = $this->request->getData('start_time');
+            $endTime = $this->request->getData('end_time');
+            if ($startTime >= $endTime)
+            {
+                $this->Flash->error(__("The starting time can't be after the end time"));
+                return $this->redirect(['action' => 'add']);
+            }
+
             if (array_search($this->request->getData('name'), $allTests) === false) {
 
                 if ($this->Tests->save($test)) {
@@ -187,6 +195,14 @@ class TestsController extends AppController
         $test = $this->Tests->get($id);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $startTime = $this->request->getData('start_time');
+            $endTime = $this->request->getData('end_time');
+            if ($startTime >= $endTime)
+            {
+                $this->Flash->error(__("The starting time can't be after the end time"));
+                return $this->redirect(['action' => 'index']);
+            }
+
             if (!empty($this->request->getData('group_id'))) {
                 foreach ($this->request->getData('group_id') as $groupsId) {
                     if (array_search($groupsId, $selectedGroups) == false) {
