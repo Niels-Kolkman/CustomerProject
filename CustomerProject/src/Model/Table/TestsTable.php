@@ -61,7 +61,14 @@ class TestsTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->allowEmptyString('name');
+            ->allowEmptyString('name')
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->scalar('subject')
+            ->maxLength('subject', 255)
+            ->requirePresence('subject', 'create')
+            ->notEmptyString('subject');
 
         $validator
             ->date('date')
@@ -79,5 +86,19 @@ class TestsTable extends Table
             ->notEmptyTime('end_time');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->isUnique(['name']), ['errorField' => 'name']);
+
+        return $rules;
     }
 }

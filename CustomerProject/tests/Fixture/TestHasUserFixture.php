@@ -23,6 +23,7 @@ class TestHasUserFixture extends TestFixture
      */
     // phpcs:disable
     public $fields = [
+        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'tests_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'users_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
@@ -30,6 +31,7 @@ class TestHasUserFixture extends TestFixture
             'users' => ['type' => 'index', 'columns' => ['users_id'], 'length' => []],
         ],
         '_constraints' => [
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'tests' => ['type' => 'foreign', 'columns' => ['tests_id'], 'references' => ['tests', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
             'users' => ['type' => 'foreign', 'columns' => ['users_id'], 'references' => ['users', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
@@ -48,6 +50,7 @@ class TestHasUserFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'tests_id' => 1,
                 'users_id' => 1,
             ],

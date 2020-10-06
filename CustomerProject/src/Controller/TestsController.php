@@ -72,7 +72,9 @@ class TestsController extends AppController
 
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
-            if (array_search($this->request->getData('name'), $allTests) !==  false) {
+            
+            if (array_search($this->request->getData('name'), $allTests) === false) {
+
                 if ($this->Tests->save($test)) {
                     $this->Flash->success(__('The test has been saved.'));
                 } else {
@@ -81,11 +83,10 @@ class TestsController extends AppController
                 }
 
 
-                $newTestId = $this->Tests->find()
+                $newTest = $this->Tests->find()
                     ->where([
                         'name' => $this->request->getData('name'),
                     ])
-                    ->select('id')
                     ->first();
 
 
@@ -94,7 +95,7 @@ class TestsController extends AppController
                     $groups = $this->request->getData('group_id');
                     foreach ($groups as $group) {
                         $testHasGroups = $testHasGroupsTable->newEmptyEntity();
-                        $data = ['groups_id' => $group->id, 'tests_id' => $newTestId['id']];
+                        $data = ['groups_id' => (int)$group, 'tests_id' => $newTest['id']];
                         $newTestHasGroups = $testHasGroupsTable->patchEntity($testHasGroups, $data);
                         $testHasGroupsTable->save($newTestHasGroups);
                     }
@@ -104,13 +105,14 @@ class TestsController extends AppController
                     $students = $this->request->getData('user_id');
                     foreach ($students as $student) {
                         $testHasUser = $testHasUserTable->newEmptyEntity();
-                        $data = ['users_id' => $student->id, 'tests_id' => $newTestId['id']];
+                        $data = ['users_id' => $student, 'tests_id' => $newTest['id']];
                         $newTestHasUsers = $testHasUserTable->patchEntity($testHasUser, $data);
                         $testHasUserTable->save($newTestHasUsers);
                     }
                 }
                 return $this->redirect(['action' => 'index']);
-            }else{
+            }
+            else {
                 $this->Flash->error(__('The test could not be saved. The name is already used. Please, try again.'));
                 return $this->redirect(['action' => 'index']);
             }

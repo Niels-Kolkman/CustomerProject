@@ -23,6 +23,7 @@ class TestHasGroupFixture extends TestFixture
      */
     // phpcs:disable
     public $fields = [
+        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'tests_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'groups_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_indexes' => [
@@ -30,6 +31,7 @@ class TestHasGroupFixture extends TestFixture
             'groups' => ['type' => 'index', 'columns' => ['groups_id'], 'length' => []],
         ],
         '_constraints' => [
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'groups' => ['type' => 'foreign', 'columns' => ['groups_id'], 'references' => ['groups', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
             'tests_id' => ['type' => 'foreign', 'columns' => ['tests_id'], 'references' => ['tests', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
@@ -48,6 +50,7 @@ class TestHasGroupFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'tests_id' => 1,
                 'groups_id' => 1,
             ],

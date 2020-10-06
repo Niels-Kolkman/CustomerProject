@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
 /**
  * TestHasUser Entity
  *
+ * @property int $id
  * @property int $tests_id
  * @property int $users_id
  *
