@@ -188,7 +188,6 @@ class TestsController extends AppController
                             ])
                             ->first();
 
-                        debug($removedGroup); die();
                         $testHasGroupsTable->delete($removedGroup);
                         continue;
                     }
