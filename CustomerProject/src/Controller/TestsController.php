@@ -72,7 +72,7 @@ class TestsController extends AppController
 
         if ($this->request->is('post')) {
             $test = $this->Tests->patchEntity($test, $this->request->getData());
-            
+
             if (array_search($this->request->getData('name'), $allTests) === false) {
 
                 if ($this->Tests->save($test)) {
@@ -132,16 +132,106 @@ class TestsController extends AppController
      */
     public function edit($id = null)
     {
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $testHasGroupsTable = TableRegistry::getTableLocator()->get('testHasGroup');
+        $testHasUserTable = TableRegistry::getTableLocator()->get('testHasUser');
+        $groupsTable = TableRegistry::getTableLocator()->get('groups');
+
         $session = $this->getRequest()->getSession();
         if ($session->read('Auth.role') == 'student'){
             $this->Flash->error('You are not allowed here.');
             $this->redirect($this->referer('/tests'));
         }
 
-        $test = $this->Tests->get($id, [
-            'contain' => [],
-        ]);
+        $selectedGroups = $testHasGroupsTable->find()
+            ->where([
+                'tests_id' => $id
+                ])
+            ->toArray();
+
+        $selectedUsers = $testHasUserTable->find()
+            ->where([
+                'tests_id' => $id
+            ])
+            ->toArray();
+
+        $users = $usersTable
+            ->find('list', [ 'keyField' => 'id',
+                'valueField' => function ($e) {
+                    return $e->get('firstname'). ' ' . $e->get('lastname');
+                }])
+            ->where([
+                'role' => 'student'
+            ])->toArray();
+
+        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
+
+        $test = $this->Tests->get($id);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
+            if (!empty($this->request->getData('group_id'))) {
+                foreach ($this->request->getData('group_id') as $groupsId) {
+                    if (array_search($groupsId, $selectedGroups) == false) {
+                        $newTestGroup = $testHasGroupsTable->newEmptyEntity();
+                        $data = ['groups_id' => (int) $groupsId, 'tests_id' => $id];
+                        $newTestHasGroups = $testHasGroupsTable->patchEntity($newTestGroup, $data);
+                        $testHasGroupsTable->save($newTestHasGroups);
+                        continue;
+                    }
+                }
+                foreach (array_column($selectedGroups, 'groups_id') as $groupId) {
+                    if (in_array($groupId, $this->request->getData('group_id')) == false) {
+                        $removedGroup = $testHasGroupsTable->find()
+                            ->where([
+                                'tests_id' => $id,
+                                'groups_id' => $groupId
+                            ])
+                            ->first();
+
+                        debug($removedGroup); die();
+                        $testHasGroupsTable->delete($removedGroup);
+                        continue;
+                    }
+                }
+            }else{
+                $removedGroups = $testHasGroupsTable->find()
+                    ->where([
+                        'tests_id' => $id,
+                    ]);
+                $testHasGroupsTable->deleteMany($removedGroups);
+            }
+
+            if (!empty($this->request->getData('user_id'))) {
+                foreach ($this->request->getData('user_id') as $usersId) {
+                    if (array_search($usersId, $selectedUsers) == false) {
+                        $newTestUser = $testHasUserTable->newEmptyEntity();
+                        $data = ['users_id' => (int) $usersId, 'tests_id' => $id];
+                        $newTestHasUser = $testHasUserTable->patchEntity($newTestUser, $data);
+                        $testHasUserTable->save($newTestHasUser);
+                        continue;
+                    }
+                }
+                foreach (array_column($selectedUsers, 'users_id') as $userId) {
+                    if (in_array($userId, $this->request->getData('user_id')) == false) {
+                        $removedUser = $testHasUserTable->find()
+                            ->where([
+                                'tests_id' => $id,
+                                'users_id' => $usersId
+                            ])
+                            ->first();
+                        $testHasUserTable->delete($removedUser);
+                        continue;
+                    }
+                }
+            }else{
+                $removedUsers = $testHasUserTable->find()
+                    ->where([
+                        'tests_id' => $id,
+                    ]);
+                $testHasUserTable->deleteMany($removedUsers);
+            }
+
+
             $test = $this->Tests->patchEntity($test, $this->request->getData());
             if ($this->Tests->save($test)) {
                 $this->Flash->success(__('The test has been saved.'));
@@ -150,7 +240,12 @@ class TestsController extends AppController
             }
             $this->Flash->error(__('The test could not be saved. Please, try again.'));
         }
+
         $this->set(compact('test'));
+        $this->set(compact('groups'));
+        $this->set(compact('users'));
+        $this->set(compact('selectedGroups'));
+        $this->set(compact('selectedUsers'));
     }
 
     /**
