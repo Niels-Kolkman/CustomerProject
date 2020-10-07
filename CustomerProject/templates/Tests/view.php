@@ -26,7 +26,11 @@
                     <td><?= h($test->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Test Date') ?></th>
+                    <th><?= __('Subject') ?></th>
+                    <td><?= h($test->subject) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Date') ?></th>
                     <td><?= h($test->date) ?></td>
                 </tr>
                 <tr>
@@ -37,10 +41,28 @@
                     <th><?= __('End Time') ?></th>
                     <td><?= h(date("h:i A", strtotime($test->end_time))) ?></td>
                 </tr>
+            </table>
+
+            <table class="checkbox-list-box">
                 <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($test->created) ?></td>
+                    <th><?= __('Groups') ?></th>
                 </tr>
+                <?php foreach ($selectedGroups as $group): ?>
+                    <tr>
+                        <td><?= h($group->group->group_name) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <table class="checkbox-list-box">
+                <tr>
+                    <th><?= __('Users') ?></th>
+                </tr>
+                    <?php foreach ($selectedUsers as $user): ?>
+                        <tr>
+                            <td><?= h($user->user->firstname . ' ' . $user->user->lastname) ?></td>
+                        </tr>
+                  <?php endforeach; ?>
             </table>
         </div>
     </div>

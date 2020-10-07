@@ -28,10 +28,21 @@
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
 
-//                    echo $this->Form->select('user_id', $users, [
-//                        'multiple' => 'checkbox',
-//                        'default' => $selectedUsers
-//                    ]);
+                echo '<div class="container checkbox-list-box">';
+                echo '<label for="group_id">Groups</label>';
+                echo $this->Form->select('group_id', $groups, [
+                    'multiple' => 'checkbox',
+                    'default' => array_column($selectedGroups, 'groups_id')
+                ]);
+                echo '</div>';
+
+                echo '<div class="container checkbox-list-box">';
+                echo '<label for="users_id">Students</label>';
+                echo $this->Form->select('user_id', $users ,[
+                    'multiple' => 'checkbox',
+                    'default' => array_column($selectedUsers, 'users_id')
+                ]);
+                echo '</div>';
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

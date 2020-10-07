@@ -41,6 +41,8 @@ class TestHasGroupTable extends Table
         parent::initialize($config);
 
         $this->setTable('test_has_group');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Tests', [
             'foreignKey' => 'tests_id',
@@ -50,6 +52,21 @@ class TestHasGroupTable extends Table
             'foreignKey' => 'groups_id',
             'joinType' => 'INNER',
         ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', null, 'create');
+
+        return $validator;
     }
 
     /**

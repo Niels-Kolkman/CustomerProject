@@ -117,7 +117,8 @@ class GroupsHasUsersController extends AppController
                 $groupsTable->save($groupNewName);
                 $this->Flash->success(__('The group name has been saved.'));
             }
-            if(empty($this->request->getData('user_id')) == false) {
+            if (empty($this->request->getData('user_id')) == false) {
+                $usersAdded = false;
                 foreach ($this->request->getData('user_id') as $user) {
                     if (array_search($user, array_column($groupsHasUsers, 'users_id')) == false) {
                         $newUser = $this->GroupsHasUsers->newEmptyEntity();
@@ -125,12 +126,16 @@ class GroupsHasUsersController extends AppController
 
                         $newUser = $this->GroupsHasUsers->patchEntity($newUser, $GroupAndUserId);
                         if ($this->GroupsHasUsers->save($newUser)) {
-                            $this->Flash->success(__('User has been added to group'));
+                            $usersAdded = true;
                             continue;
                         }
                     }
                 }
+                if ($usersAdded) {
+                    $this->Flash->success(__('User(s) added to group'));
+                }
 
+                $usersRemoved = false;
                 foreach (array_column($groupsHasUsers, 'users_id') as $existingUser) {
                     if (in_array($existingUser, $this->request->getData('user_id')) == false) {
                         $removedUser = $this->GroupsHasUsers->find()
@@ -140,9 +145,12 @@ class GroupsHasUsersController extends AppController
                             ])
                             ->first();
                         if ($this->GroupsHasUsers->delete($removedUser)) {
-                            $this->Flash->success(__('User has been removed from group'));
+                            $usersRemoved = true;
                         }
                     }
+                }
+                if ($usersRemoved) {
+                    $this->Flash->success(__('User(s) removed from group'));
                 }
             }else{
                 $removedUsers = $this->GroupsHasUsers->find()
@@ -151,7 +159,7 @@ class GroupsHasUsersController extends AppController
                     ])
                     ->toArray();
                $this->GroupsHasUsers->deleteMany($removedUsers);
-                $this->Flash->success(__('Users have been removed from group'));
+               $this->Flash->success(__('User(s) removed from group'));
             }
         }
         $this->set('group', $group);
