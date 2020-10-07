@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Test[]|\Cake\Collection\CollectionInterface $tests
  */
+$date = \Cake\I18n\Time::today()->format('m-d-y');
+$now = \Cake\I18n\Time::now('Europe/Amsterdam')->format('h:i:s A');
 ?>
 <div class="tests index content">
     <?php if ($this->getRequest()->getSession()->read('Auth.role') !== 'student'): ?>
@@ -23,6 +25,7 @@
             </thead>
             <tbody>
                 <?php foreach ($tests as $test): ?>
+
                 <tr>
                     <td><?= h($test->name) ?></td>
                     <td><?= h($test->subject) ?></td>
@@ -30,7 +33,17 @@
                     <td><?= h(date("h:i A", strtotime($test->start_time))) ?></td>
                     <td><?= h(date("h:i A", strtotime($test->end_time))) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>
+                        <?php if ($this->getRequest()->getSession()->read('Auth.role') == 'student'): ?>
+                            <?php if ($test->date->format('m-d-y') <= $date): ?>
+                                <?php if ($test->end_time->format('h:i:s A') <= $now): ; ?>
+                                    <?php if ($test->end_time->format('h:i:s A') <= $now): ; ?>
+                                        <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>
+                        <?php endif; ?>
                         <?php if ($this->getRequest()->getSession()->read('Auth.role') !== 'student'): ?>
                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $test->id]) ?>
                             <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $test->id], ['confirm' => __('Are you sure you want to delete # {0}?', $test->id)]) ?>
