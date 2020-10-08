@@ -23,12 +23,16 @@
                     $selectedUsers = array();
                     foreach($groupsHasUsers as $groupsHasUser){
                         $selectedUsers[] = $groupsHasUser['users_id'];
+
                     }
+                    echo '<label for="users_id">Students</label>';
+                    echo '<div class="container checkbox-list-box">';
                     echo $this->Form->select('user_id', $users, [
                         'multiple' => 'checkbox',
                         'default' => $selectedUsers
                     ]);
                     ?>
+                   <?php echo '</div>'; ?>
                 </fieldset>
                 <?= $this->Form->button(__('Submit')) ?>
                 <?= $this->Form->end() ?>

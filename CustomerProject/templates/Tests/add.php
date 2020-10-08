@@ -23,8 +23,8 @@
                 echo $this->Form->control('start_time');
                 echo $this->Form->control('end_time');
 
-                echo '<div class="container checkbox-list-box">';
                 echo '<label for="group_id">Groups</label>';
+                echo '<div class="container checkbox-list-box">';
                 echo $this->Form->select('group_id', $groups, [
                     'multiple' => 'checkbox',
                 ]);

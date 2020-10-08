@@ -21,6 +21,8 @@
                 <?php
                 echo $this->Form->control('group_name', ['label' => 'Group name', 'required' => true]);
 
+                echo '<label for="users_id">Students</label>';
+                echo '<div class="container checkbox-list-box">';
                 echo $this->Form->control('user_id', array(
                     'label' => 'Students',
                     'type' => 'select',
@@ -28,6 +30,7 @@
                     'options' => $users,
                 ));
                 ?>
+                echo '</div>';
 
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
