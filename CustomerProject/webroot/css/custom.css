@@ -1,10 +1,11 @@
 .checkbox-list-box {
   border: 0.1rem solid #d1d1d1;
   border-radius: .4rem;
-  padding-top: 15px;
   overflow: auto;
   max-height: 50vh;
+  margin-top: 20px;
   margin-bottom: 30px;
+  padding: 0 10px;
 }
 
 .checkbox-list-box .checkbox label {

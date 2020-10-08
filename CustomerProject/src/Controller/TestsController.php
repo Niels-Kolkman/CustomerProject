@@ -20,7 +20,39 @@ class TestsController extends AppController
      */
     public function index()
     {
-        $tests = $this->paginate($this->Tests->find()->orderDesc('created'));
+        $session = $this->getRequest()->getSession();
+        $testHasGroupTable = TableRegistry::getTableLocator()->get('TestHasGroup');
+        $testHasUserTable = TableRegistry::getTableLocator()->get('TestHasUser');
+        $groupsHasUserTable = TableRegistry::getTableLocator()->get('GroupsHasUsers');
+        if ($session->read('Auth.role') == 'docent'){
+            $tests = $this->paginate($this->Tests->find()->orderDesc('created'));
+        }else{
+          $groups = $groupsHasUserTable->find()
+                ->where([
+                'users_id' => $session->read('Auth.id')
+                ])
+                ->orderDesc('created')
+                ->toArray();
+
+          $testIdsGroups = $testHasGroupTable->find()
+              ->where([
+                  'groups_id IN' => array_column($groups, 'groups_id')
+              ])->toArray();
+
+          $ids = array_column($testIdsGroups, 'tests_id');
+
+            $testIdsUsers =
+                $testHasUserTable->find()
+                ->where([
+                    'users_id' => $session->read('Auth.id')
+                ])->toArray();
+
+            $allIds = array_merge(array_column($testIdsUsers, 'tests_id'), $ids);
+
+            $tests = $this->paginate($this->Tests->find()->where([
+               'id IN' =>  $allIds
+            ]));
+        }
 
         $this->set(compact('tests'));
     }

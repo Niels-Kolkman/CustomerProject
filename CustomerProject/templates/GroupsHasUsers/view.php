@@ -16,9 +16,11 @@
             <h3>Group: <?= h($group->group_name) ?></h3>
             <table>
                 <?php if (!empty($users)): ?>
+                <tr>
+                   <th><?= __('Students') ?></th>
+                </tr>
                 <?php foreach($users as $user): ?>
                 <tr>
-                    <th><?= __('Student') ?></th>
                     <td>
                         <?= $this->Html->link($user['firstname'] . ' ' . $user['lastname'], ['controller' => 'Users', 'action' => 'view', $user->id]); ?>
                     </td>
