@@ -83,6 +83,7 @@ class TestsController extends AppController
                 'tests_id' => $id
             ])
             ->contain('Users')
+            ->orderAsc('firstname')
             ->toArray();
 
         $this->set(compact('test'));
@@ -111,10 +112,12 @@ class TestsController extends AppController
                 }])
             ->where([
                 'role' => 'student'
-            ])->toArray();
+            ])
+            ->orderAsc('firstname')
+            ->toArray();
 
         $groupsTable = TableRegistry::getTableLocator()->get('groups');
-        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
+        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->orderAsc('group_name')->toArray();
 
         $test = $this->Tests->newEmptyEntity();
         $allTests = $this->Tests->find()->toArray();
@@ -211,9 +214,11 @@ class TestsController extends AppController
                 }])
             ->where([
                 'role' => 'student'
-            ])->toArray();
+            ])
+            ->orderAsc('firstname')
+            ->toArray();
 
-        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->toArray();
+        $groups = $groupsTable->find('list', [ 'keyField' => 'id', 'valueField' => 'group_name'])->orderAsc('group_name')->toArray();
 
         $test = $this->Tests->get($id);
 

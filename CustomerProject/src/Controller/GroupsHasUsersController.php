@@ -80,7 +80,9 @@ class GroupsHasUsersController extends AppController
                 }])
             ->where([
                 'role' => 'student'
-            ])->toArray();
+            ])
+            ->orderAsc('firstname')
+            ->toArray();
 
         $this->set('group', $groups);
         $this->set(compact('users') );
@@ -106,7 +108,9 @@ class GroupsHasUsersController extends AppController
                 }])
             ->where([
                 'role' => 'student'
-            ])->toArray();
+            ])
+            ->orderAsc('firstname')
+            ->toArray();
 
         $groupsHasUsers = $this->GroupsHasUsers->find()->where(['groups_id' => $id])->toArray();
 
