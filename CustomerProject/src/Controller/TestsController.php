@@ -20,7 +20,7 @@ class TestsController extends AppController
      */
     public function index()
     {
-        $tests = $this->paginate($this->Tests);
+        $tests = $this->paginate($this->Tests->find()->orderDesc('created'));
 
         $this->set(compact('tests'));
     }
