@@ -56,7 +56,7 @@
                 </table>
             <?php endif; ?>
 
-            <?php if (!empty($selectedGroups)): ?>
+            <?php if (!empty($selectedUsers)): ?>
                 <table class="checkbox-list-box">
                     <tr>
                         <th><?= __('Users') ?></th>
