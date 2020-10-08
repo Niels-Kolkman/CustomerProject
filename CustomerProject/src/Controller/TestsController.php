@@ -31,7 +31,6 @@ class TestsController extends AppController
                 ->where([
                 'users_id' => $session->read('Auth.id')
                 ])
-                ->orderDesc('created')
                 ->toArray();
 
           $testIdsGroups = $testHasGroupTable->find()
@@ -51,7 +50,7 @@ class TestsController extends AppController
 
             $tests = $this->paginate($this->Tests->find()->where([
                'id IN' =>  $allIds
-            ]));
+            ])->orderDesc('created'));
         }
 
         $this->set(compact('tests'));
