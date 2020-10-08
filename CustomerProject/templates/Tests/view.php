@@ -43,27 +43,31 @@
                 </tr>
             </table>
 
-            <table class="checkbox-list-box">
-                <tr>
-                    <th><?= __('Groups') ?></th>
-                </tr>
-                <?php foreach ($selectedGroups as $group): ?>
+            <?php if (!empty($selectedGroups)): ?>
+                <table class="checkbox-list-box">
                     <tr>
-                        <td><?= h($group->group->group_name) ?></td>
+                        <th><?= __('Groups') ?></th>
                     </tr>
-                <?php endforeach; ?>
-            </table>
+                    <?php foreach ($selectedGroups as $group): ?>
+                        <tr>
+                            <td><?= h($group->group->group_name) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            <?php endif; ?>
 
-            <table class="checkbox-list-box">
-                <tr>
-                    <th><?= __('Users') ?></th>
-                </tr>
+            <?php if (!empty($selectedGroups)): ?>
+                <table class="checkbox-list-box">
+                    <tr>
+                        <th><?= __('Users') ?></th>
+                    </tr>
                     <?php foreach ($selectedUsers as $user): ?>
                         <tr>
                             <td><?= h($user->user->firstname . ' ' . $user->user->lastname) ?></td>
                         </tr>
-                  <?php endforeach; ?>
-            </table>
+                    <?php endforeach; ?>
+                </table>
+            <?php endif; ?>
         </div>
     </div>
 </div>
