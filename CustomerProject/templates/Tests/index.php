@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\Test[]|\Cake\Collection\CollectionInterface $tests
  */
 $date = \Cake\I18n\Time::today()->format('m-d-y');
-$now = \Cake\I18n\Time::now('Europe/Amsterdam')->format('h:i:s A');
+$now = \Cake\I18n\Time::now('Europe/Amsterdam');
 ?>
 <div class="tests index content">
     <?php if ($this->getRequest()->getSession()->read('Auth.role') !== 'student'): ?>
@@ -34,9 +34,9 @@ $now = \Cake\I18n\Time::now('Europe/Amsterdam')->format('h:i:s A');
                     <td><?= h(date("h:i A", strtotime($test->end_time))) ?></td>
                     <td class="actions">
                         <?php if ($this->getRequest()->getSession()->read('Auth.role') == 'student'): ?>
-                            <?php if ($test->date->format('m-d-y') <= $date): ?>
-                                <?php if ($test->end_time->format('h:i:s A') <= $now): ; ?>
-                                    <?php if ($test->end_time->format('h:i:s A') <= $now): ; ?>
+                            <?php  if ($test->date->format('m-d-y') == $date): ?>
+                                <?php if (strtotime($test->start_time) < strtotime($now)): ?>
+                                    <?php if (strtotime($test->end_time) >  strtotime($now)):  ?>
                                         <?= $this->Html->link(__('View'), ['action' => 'view', $test->id]) ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
