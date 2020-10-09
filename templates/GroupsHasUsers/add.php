@@ -28,9 +28,8 @@
                     'multiple' => 'checkbox',
                     'options' => $users,
                 ));
-                ?>
                 echo '</div>';
-
+                ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

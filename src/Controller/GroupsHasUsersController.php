@@ -60,14 +60,16 @@ class GroupsHasUsersController extends AppController
 
                 $groupId = $groupsTable->find()->where(['group_name' => $groups['group_name']])->first();
                 $groupUsers = $this->request->getData('user_id');
-                foreach($groupUsers as $id) {
-                    $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
-                    $data = [
-                        'groups_id' => $groupId['id'],
-                        'users_id' => $id
-                    ];
-                    $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
-                    $this->GroupsHasUsers->save($a);
+                if (!empty($groupUsers)) {
+                    foreach ($groupUsers as $id) {
+                        $groupsHasUsers = $this->GroupsHasUsers->newEmptyEntity();
+                        $data = [
+                            'groups_id' => $groupId['id'],
+                            'users_id' => $id
+                        ];
+                        $a = $this->GroupsHasUsers->patchEntity($groupsHasUsers, $data);
+                        $this->GroupsHasUsers->save($a);
+                    }
                 }
                 return $this->redirect(['controller' => 'Groups', 'action' => 'index']);
             }
@@ -85,7 +87,7 @@ class GroupsHasUsersController extends AppController
             ->toArray();
 
         $this->set('group', $groups);
-        $this->set(compact('users') );
+        $this->set(compact('users'));
     }
 
     /**

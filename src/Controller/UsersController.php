@@ -35,7 +35,7 @@ class UsersController extends AppController
            $this->Flash->error('You are not allowed here.');
             $this->redirect($this->referer('/tests'));
         }
-        $users = $this->paginate($this->Users->find()->orderDesc('created'));
+        $users = $this->paginate($this->Users->find());
         $this->set(compact('users'));
     }
 
