@@ -25,7 +25,7 @@ class TestsController extends AppController
         $testHasUserTable = TableRegistry::getTableLocator()->get('TestHasUser');
         $groupsHasUserTable = TableRegistry::getTableLocator()->get('GroupsHasUsers');
         if ($session->read('Auth.role') == 'docent'){
-            $tests = $this->paginate($this->Tests->find()->orderDesc('created'));
+            $tests = $this->paginate($this->Tests->find());
         }else{
           $groups = $groupsHasUserTable->find()
                 ->where([
@@ -50,7 +50,7 @@ class TestsController extends AppController
 
             $tests = $this->paginate($this->Tests->find()->where([
                'id IN' =>  $allIds
-            ])->orderDesc('created'));
+            ]));
         }
 
         $this->set(compact('tests'));

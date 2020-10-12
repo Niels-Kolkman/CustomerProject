@@ -26,7 +26,7 @@ class GroupsController extends AppController
             $this->redirect($this->referer('/tests'));
         }
 
-        $groups = $this->paginate($this->Groups->find()->orderDesc('created'));
+        $groups = $this->paginate($this->Groups->find());
 
         $this->set(compact('groups'));
     }
